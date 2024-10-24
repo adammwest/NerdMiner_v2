@@ -132,7 +132,10 @@ static void process_hashrate_response(task_result *result) {
 void runASIC_RX(void * task_id) {
   while (1) {
     task_result result = {0};
-    if (!nerdnos_proccess_work(version, 10000, &result)) {
+    // bm1397 fullscan time is 83ms
+    // bm1397 can also produce no nonces for a work item
+    int blocking_timeout = 80;
+    if (!nerdnos_proccess_work(version, blocking_timeout, &result)) {
       continue;
     }
 
